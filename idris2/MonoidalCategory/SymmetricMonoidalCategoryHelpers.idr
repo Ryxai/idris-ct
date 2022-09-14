@@ -9,7 +9,7 @@ import MonoidalCategory.MonoidalCategoryHelpers
 import Product.ProductCategory
 
 public export
-swapMorphisms :
+swapMorphisms : {cat1, cat2 : Category} -> 
      (a, b : (obj cat1, obj cat2))
   -> mor (productCategory cat1 cat2) a b
   -> mor (productCategory cat2 cat1) (swap a) (swap b)
@@ -54,7 +54,7 @@ UnitCoherence cat tensor unit leftUnitor rightUnitor symmetry a =
            (mapObj tensor (a, unit))
            (mapObj tensor (unit, a))
            a
-           (component (natTrans symmetry) (a, unit))
+           (component (natTrans symmetry) ?rhs)
            (component (natTrans leftUnitor) a))
 
 public export
@@ -119,8 +119,7 @@ associativityRight cat tensor associator symmetry a b c =
                            (b, mapObj tensor (c, a))
                            (MkProductMorphism (identity cat b) (component (natTrans symmetry) (a, c)))))
 
-public export
-AssociativityCoherence :
+public export AssociativityCoherence :
      (cat : Category)
   -> (tensor : CFunctor (productCategory cat cat) cat)
   -> (associator : Associator cat tensor)
@@ -159,4 +158,4 @@ InverseLaw cat tensor symmetry a b =
            (mapObj tensor (a, b))
            (component (natTrans symmetry) (a, b))
            (component (natTrans symmetry) (b, a))) =
-  (identity cat (mapObj tensor (a, b)))
+             (identity cat (mapObj tensor (a, b)))
